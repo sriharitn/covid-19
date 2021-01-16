@@ -69,7 +69,7 @@ es.f <- es(taiwan.ts,xreg = xreg,holdout = T,h = 8)
 x <-(forecast(es.f,h=8))
 lines(ts(taiwan.ts[(length(taiwan.ts)-8):length(taiwan.ts)],frequency = 12,start=c(2004,12)),col="red")
 
-plot(taiwan.ts,ylim = c(0,80000))
+plot(taiwan.ts,ylim = c(0,80000),ylab="Taiwan Tourism")
 lines(x$fitted,col="blue",type="o")
 lines(x$forecast,col="red",type="o")
 lines(x$upper,col="red")

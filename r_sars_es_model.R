@@ -65,7 +65,7 @@ xreg <- data.frame(tc,ls)
 ## Final Model with Regressors
 es.f <- es(taiwan.ts,xreg = xreg,holdout = T,h = 8)
 
-## Plot Forecasts
+## Plot Forecasts and output
 taiwan.f <-(forecast(es.f,h=8))
 plot(taiwan.ts,ylim = c(0,80000),ylab="Taiwan Tourism")
 lines(taiwan.f$fitted,col="blue",type="o")

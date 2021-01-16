@@ -67,7 +67,6 @@ es.f <- es(taiwan.ts,xreg = xreg,holdout = T,h = 8)
 
 ## Plot Forecasts
 taiwan.f <-(forecast(es.f,h=8))
-
 plot(taiwan.ts,ylim = c(0,80000),ylab="Taiwan Tourism")
 lines(taiwan.f$fitted,col="blue",type="o")
 lines(taiwan.f$forecast,col="red",type="o")
@@ -75,3 +74,4 @@ lines(taiwan.f$upper,col="red")
 lines(taiwan.f$lower,col="red")
 abline(v=(2004+11/12),col="orange")
 text(2005.3,5000,"Hold Out")
+

@@ -44,7 +44,7 @@ for (i in seq_along(delta)) {
 }
 
 ## Plot the data with minimum aic and corresponding delta
-plot(aic_delta,xlab="delta",ylab="AIC",col="blue")
+plot(aic_delta,xlab=expression(paste("delta(",delta,")")),ylab="AIC",col="blue")
 abline(v=aic_delta[which.min(aic_delta[,2]),1],col="red")
 
 
@@ -67,7 +67,7 @@ es.f <- es(taiwan.ts,xreg = xreg,holdout = T,h = 8)
 
 ## Plot Forecasts and output
 taiwan.f <-(forecast(es.f,h=8))
-plot(taiwan.ts,ylim = c(0,80000),ylab="Taiwan Tourism")
+plot(taiwan.ts,ylim = c(0,80000),ylab="Japan to Taiwan Tourism")
 lines(taiwan.f$fitted,col="blue",type="o")
 lines(taiwan.f$forecast,col="red",type="o")
 lines(taiwan.f$upper,col="red")

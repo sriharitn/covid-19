@@ -73,5 +73,6 @@ lines(taiwan.f$forecast,col="red",type="o")
 lines(taiwan.f$upper,col="red")
 lines(taiwan.f$lower,col="red")
 abline(v=(2004+11/12),col="orange")
+
 text(2005.3,5000,"Hold Out")
 

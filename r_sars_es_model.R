@@ -132,5 +132,3 @@ effect.plot()
 dev.off()
 
 
-
-

@@ -28,8 +28,12 @@ aic_delta <- matrix(NA,length(delta),2)
 
 for (i in seq_along(delta)) {
   
+  ## tc = temproarcy change
+  
   tc <- filter(1 * (seq.int(length(taiwan.ts)) == 31), filter = delta[i], method = "rec", 
                sides = 1)
+  
+  ## ls = level shoft
   
   ls <- 1 * (seq_along(taiwan.ts) > length(taiwan.ts_presars) & seq_along(taiwan.ts) <=length(taiwan.ts_presars)+3)
   
@@ -67,12 +71,27 @@ es.f <- es(taiwan.ts,xreg = xreg,holdout = T,h = 8)
 
 ## Plot Forecasts and output
 taiwan.f <-(forecast(es.f,h=8))
-plot(taiwan.ts,ylim = c(0,80000),ylab="Japan to Taiwan Tourism")
-lines(taiwan.f$fitted,col="blue",type="o")
-lines(taiwan.f$forecast,col="red",type="o")
-lines(taiwan.f$upper,col="red")
-lines(taiwan.f$lower,col="red")
-abline(v=(2004+11/12),col="orange")
 
-text(2005.3,5000,"Hold Out")
+taiwan.plot <- function(){
+  plot(taiwan.ts,ylim = c(0,80000),ylab="Japan to Taiwan Tourism")
+  lines(taiwan.f$fitted,col="blue",type="o")
+  lines(taiwan.f$forecast,col="red",type="o")
+  lines(taiwan.f$upper,col="red")
+  lines(taiwan.f$lower,col="red")
+  abline(v=(2004+11/12),col="darkviolet",lty=2)
+  text(2005.3,5000,"Hold Out")
+  
+}
+
+taiwan.plot()
+
+
+effects <- ts((es.f$states[1,2] * xreg[,1] + es.f$states[1,3] * xreg[,2]),frequency = 12, start = c(2001,01))
+
+plot(effects,col="darkred",type="o",ylab = "SARS Effects: Loss of Tourists")
+
+
+lines(effects+es.f$states[1,1],col="blue")
+
+
 

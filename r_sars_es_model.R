@@ -48,7 +48,10 @@ for (i in seq_along(delta)) {
 }
 
 ## Plot the data with minimum aic and corresponding delta
-plot(aic_delta,xlab=expression(paste("delta(",delta,")")),ylab="AIC",col="blue")
+
+plot(aic_delta,xlab=expression(paste("delta(",delta,")")),ylab="AIC",col="blue",
+     main = "AIC vs delta for Exponential Smoothing ")
+axis(1, at=aic_delta[which.min(aic_delta[,2]),1], labels=aic_delta[which.min(aic_delta[,2]),1])
 abline(v=aic_delta[which.min(aic_delta[,2]),1],col="red")
 
 
@@ -73,25 +76,61 @@ es.f <- es(taiwan.ts,xreg = xreg,holdout = T,h = 8)
 taiwan.f <-(forecast(es.f,h=8))
 
 taiwan.plot <- function(){
-  plot(taiwan.ts,ylim = c(0,80000),ylab="Japan to Taiwan Tourism")
-  lines(taiwan.f$fitted,col="blue",type="o")
-  lines(taiwan.f$forecast,col="red",type="o")
+  par(mar=c(4.5,4.5,4.5,4.5)+.1)
+  cex.s <- 2
+  plot(taiwan.ts,ylim = c(0,80000),ylab = " ",xlab = " ",yaxt="n",xaxt="n",cex = cex.s,
+       main="Model with Exponential Smoothing and Predicted vs. Holdout",cex.main=cex.s)
+  axis(2,cex.axis=cex.s)
+  axis(1,cex.axis=cex.s)
+  lines(taiwan.f$fitted,col="blue",type="o",cex = cex.s)
+  lines(taiwan.f$forecast,col="red",type="o",cex = cex.s)
   lines(taiwan.f$upper,col="red")
   lines(taiwan.f$lower,col="red")
   abline(v=(2004+11/12),col="darkviolet",lty=2)
-  text(2005.3,5000,"Hold Out")
+  text(2005.3,5000,"Hold Out",cex = cex.s)
+  mtext("# of Tourist Arrival from Japan", side=2, line=3, cex=cex.s)
+  mtext("Time", side=1, line=2.8, cex=cex.s)
   
 }
 
-taiwan.plot()
+
 
 
 effects <- ts((es.f$states[1,2] * xreg[,1] + es.f$states[1,3] * xreg[,2]),frequency = 12, start = c(2001,01))
 
-plot(effects,col="darkred",type="o",ylab = "SARS Effects: Loss of Tourists")
 
+effect.plot <- function(){
+  
+  par(mar=c(4.5,4.5,4.5,4.5)+.1)
+  cex.s <- 2
+  plot(effects,col="darkred",type="o",ylab = " ",xlab = " ",yaxt="n",xaxt="n",cex=cex.s,
+       main="SARS Effects - Exponential Smoothing",cex.main=cex.s)
+  axis(2,cex.axis=cex.s)
+  axis(1,cex.axis=cex.s)
+  mtext("Reduction in Tourist Arrival from Japan", side=2, line=3, cex=cex.s)
+  mtext("Time", side=1, line=2.8, cex=cex.s)
+  text(2001.1,-30000,"Due to SARS Pandemic Taiwan \nPermenantly lost ~590K Tourists \nfrom Japan",cex = cex.s,pos = 4)
+  
+  
+}
 
-lines(effects+es.f$states[1,1],col="blue")
+dev.off()
+
+dev.new(width=6.1, height=5.4, unit="in")
+
+png(
+  "Expo_smooth.png",
+  width     = 6.1,
+  height    = 5.3,
+  units     = "in",
+  res       = 800,
+  pointsize = 4
+)
+par(mfrow=c(2,1))
+taiwan.plot()
+effect.plot()
+dev.off()
+
 
 
 
